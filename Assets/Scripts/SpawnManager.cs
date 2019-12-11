@@ -15,9 +15,7 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private bool _stopSpawning = false;
-
-   
-
+    
     public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());

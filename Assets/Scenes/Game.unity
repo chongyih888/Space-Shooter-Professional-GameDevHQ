@@ -736,7 +736,7 @@ GameObject:
   - component: {fileID: 902060239}
   m_Layer: 0
   m_Name: Shields_Visualizer
-  m_TagString: Untagged
+  m_TagString: ShieldVisualizer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

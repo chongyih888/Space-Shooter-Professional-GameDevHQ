@@ -24,11 +24,16 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        _audioSource = GetComponent<AudioSource>();
-
+       
         if(_player == null)
         {
             Debug.LogError("The Player is NULL");
+        }
+
+        _audioSource = GetComponent<AudioSource>();
+        if(_audioSource == null)
+        {
+            Debug.LogError("The AudioSource is NULL");
         }
 
         //assign the component to anim
@@ -74,11 +79,11 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Player")
+        if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
 
-            if(player != null)
+            if (player != null)
             {
                 player.Damage();
             }
@@ -87,9 +92,9 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
-                        
+
             Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.6f);           
+            Destroy(this.gameObject, 2.6f);
         }
 
 
@@ -97,10 +102,8 @@ public class Enemy : MonoBehaviour
         {
             Destroy(other.gameObject);
             //Add 10 to score
-            if (_player != null)
-            {
-                _player.UpdateScore(10);
-            }
+            _player.UpdateScore(10);
+                        
             //trigger anim
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;

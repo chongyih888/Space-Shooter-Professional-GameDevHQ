@@ -106,6 +106,7 @@ public class Player : MonoBehaviour
         if(transform.position.x > 11.3f)
         {
             transform.position = new Vector3(-11.3f,transform.position.y,0);
+
         }else if (transform.position.x < -11.3f)
         {
             transform.position = new Vector3( 11.3f, transform.position.y, 0);
@@ -150,15 +151,19 @@ public class Player : MonoBehaviour
         if(_lives == 2)
         {
             _leftEngine.SetActive(true);
+
         }else if (_lives == 1)
         {
             _rightEngine.SetActive(true);
         }
 
-        if (_lives > -1 && _lives < 4)
+        if (_lives < 0)
         {
-            _uiManager.UpdateLives(_lives);
+            _lives = 0;
         }
+        
+        _uiManager.UpdateLives(_lives);
+        
 
         if(_lives < 1)
         {            
@@ -206,6 +211,5 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uiManager.UpdateScore(_score);
-    }
-   
+    }    
 }

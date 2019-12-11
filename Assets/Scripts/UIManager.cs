@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
     {        
         //assign text component to the handle
         _scoreText.text = "Score: " + 0;
+
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
 
         if(_gameManager == null)
@@ -44,11 +45,8 @@ public class UIManager : MonoBehaviour
     {
         //display img sprite
         //give it a new one based on the currentLives index
-        if (currentLives > -1 && currentLives < 4)
-        {
-            _LivesImg.sprite = _liveSprites[currentLives];
-        }
-
+        _LivesImg.sprite = _liveSprites[currentLives];
+        
         if(currentLives < 1)
         {
             GameOverSequence();
