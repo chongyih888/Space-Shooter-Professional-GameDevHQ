@@ -5,9 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 3.5f;
+    private float _speed = 5.0f;
     private float _speedMultipler = 2;
 
+    [SerializeField]
+    private float _thrusterSpeedBoost = 1;
+   
     [SerializeField]
     private GameObject _laserPrefab;
 
@@ -47,10 +50,16 @@ public class Player : MonoBehaviour
     //variable to store the audio clip
     [SerializeField]
     private AudioClip _laserAudioclip;
-
     
     private AudioSource _audioSource;
 
+    [SerializeField]
+    private int _ammoCount = 15;
+
+    private bool _hasAmmo = true;
+
+    [SerializeField]
+    private int _shieldStrength;
 
     // Start is called before the first frame update
     void Start()
@@ -59,19 +68,19 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 
-        if(_spawnManager == null)
+        if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL");
         }
 
-        if(_uiManager == null)
+        if (_uiManager == null)
         {
             Debug.LogError("The UIManager is NULL");
         }
 
         _audioSource = GetComponent<AudioSource>();
 
-        if(_audioSource == null)
+        if (_audioSource == null)
         {
             Debug.LogError("The AudioSource on the player is NULL");
         }
@@ -79,6 +88,7 @@ public class Player : MonoBehaviour
         {
             _audioSource.clip = _laserAudioclip;
         }
+              
     }
 
     // Update is called once per frame
@@ -86,9 +96,20 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _hasAmmo == true)
         {
             FireLaser();
+            AmmoStatus();
+            _uiManager.UpdateAmmo(_ammoCount);
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _thrusterSpeedBoost = 1.5f;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _thrusterSpeedBoost = 1;
         }
     }
 
@@ -98,20 +119,19 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+        
+        transform.Translate(direction * _speed * _thrusterSpeedBoost * Time.deltaTime);
 
-        transform.Translate(direction * _speed * Time.deltaTime);
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.2f, 0), 0);
 
-        transform.position = new Vector3(transform.position.x,Mathf.Clamp(transform.position.y,-3.2f,0),0);
-
-        if(transform.position.x > 11.3f)
+        if (transform.position.x > 11.3f)
         {
-            transform.position = new Vector3(-11.3f,transform.position.y,0);
+            transform.position = new Vector3(-11.3f, transform.position.y, 0);
 
-        }else if (transform.position.x < -11.3f)
+        } else if (transform.position.x < -11.3f)
         {
-            transform.position = new Vector3( 11.3f, transform.position.y, 0);
+            transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
-
     }
 
     void FireLaser()
@@ -120,7 +140,7 @@ public class Player : MonoBehaviour
 
         if (_isTripleShotActive == true)
         {
-            Instantiate(_tripleShotPrefab, transform.position , Quaternion.identity);
+            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
         }
         else
         {
@@ -130,29 +150,38 @@ public class Player : MonoBehaviour
 
         // play the laser audio clip
         _audioSource.Play();
-       
+
     }
 
     public void Damage()
     {
-        if(_isShieldsActive == true)
-        {
-            _isShieldsActive = false;
-            _shieldsVisualizer.SetActive(false);
-            return;
-        }
+      
 
+        if(_isShieldsActive == true && _shieldStrength > 0)
+        {
+            ShieldStrength();
+
+            if(_shieldStrength == 0)
+            {
+                _isShieldsActive = false;
+                _shieldsVisualizer.SetActive(false);
+            }
+
+            return;
+
+        }
+    
         _lives--;
 
         //if lives is 2
         //enable right engine
         //else if lives is 1
         //enable left engine
-        if(_lives == 2)
+        if (_lives == 2)
         {
             _leftEngine.SetActive(true);
 
-        }else if (_lives == 1)
+        } else if (_lives == 1)
         {
             _rightEngine.SetActive(true);
         }
@@ -161,12 +190,12 @@ public class Player : MonoBehaviour
         {
             _lives = 0;
         }
-        
-        _uiManager.UpdateLives(_lives);
-        
 
-        if(_lives < 1)
-        {            
+        _uiManager.UpdateLives(_lives);
+
+
+        if (_lives < 1)
+        {
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
@@ -201,6 +230,8 @@ public class Player : MonoBehaviour
 
     public void ShieldsActive()
     {
+        _shieldStrength = 3;
+        _uiManager.UpdateShieldStrength(_shieldStrength);
         _isShieldsActive = true;
         _shieldsVisualizer.SetActive(true);
     }
@@ -211,5 +242,53 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uiManager.UpdateScore(_score);
-    }    
+    }
+
+    void AmmoStatus()
+    {
+        _ammoCount--;
+
+        if(_ammoCount < 1)
+        {
+            _hasAmmo = false;
+        }
+    }
+
+    public void ShieldStrength()
+    {
+        _shieldStrength--;
+        _uiManager.UpdateShieldStrength(_shieldStrength);        
+    }
+   
+    public void BulletsActive()
+    {
+        _ammoCount = 15;
+        _uiManager.UpdateAmmo(_ammoCount);
+    }
+
+    public void HealthBoostActive()
+    {
+        if (_lives < 3)
+        {
+            if (_lives > 0)
+            {
+                _lives++;
+                _uiManager.UpdateLives(_lives);
+
+                if(_lives > 2)
+                {
+                    _leftEngine.SetActive(false);
+
+                }
+
+                if (_lives > 1)
+                {
+                    _rightEngine.SetActive(false);
+                }
+            }
+        }
+    }
 }
+
+
+

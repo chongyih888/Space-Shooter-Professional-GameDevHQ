@@ -44,6 +44,12 @@ public class Powerup : MonoBehaviour
                     case 2:
                         player.ShieldsActive();                       
                         break;
+                    case 3:
+                        player.BulletsActive();
+                        break;
+                    case 4:
+                        player.HealthBoostActive();
+                        break;
                     default:
                         break;
                 

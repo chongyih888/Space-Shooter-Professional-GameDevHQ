@@ -22,11 +22,18 @@ public class UIManager : MonoBehaviour
 
     private GameManager _gameManager;
 
+    [SerializeField]
+    private Text _ammoText;
+
+    [SerializeField]
+    private Text _shieldStrengthText;
+
     // Start is called before the first frame update
     void Start()
     {        
         //assign text component to the handle
         _scoreText.text = "Score: " + 0;
+        _shieldStrengthText.text = "Shield: " + 0;
 
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
 
@@ -34,6 +41,7 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogError("The GameMamanger is NULL");
         }
+
     }
 
     public void UpdateScore(int playerScore)
@@ -71,5 +79,15 @@ public class UIManager : MonoBehaviour
             _gameOverText.text = "";
             yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    public void UpdateAmmo(int ammo)
+    {
+        _ammoText.text = "Ammo: " + ammo;
+    }
+
+    public void UpdateShieldStrength(int shieldStrength)
+    {
+       _shieldStrengthText.text = "Shield: " + shieldStrength;        
     }
 }
