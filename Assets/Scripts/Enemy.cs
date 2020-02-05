@@ -111,5 +111,18 @@ public class Enemy : MonoBehaviour
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject,2.6f);         
         }
+
+        if(other.tag == "YellowSphere")
+        {
+            Destroy(other.gameObject);
+            _player.UpdateScore(10);
+
+            _anim.SetTrigger("OnEnemyDeath");
+            _speed = 0;
+            _audioSource.Play();
+
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject, 2.6f);
+        }
     }
 }

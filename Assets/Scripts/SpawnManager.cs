@@ -15,6 +15,11 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private bool _stopSpawning = false;
+
+    [SerializeField]
+    private int _rocketCount = 0;
+
+    private int _randomPowerup;
     
     public void StartSpawning()
     {
@@ -46,9 +51,21 @@ public class SpawnManager : MonoBehaviour
 
             Vector3 posToSpawn = new Vector3(Random.Range(-8f,8f), 7, 0);
 
-            int randomPowerup = Random.Range(0, 5);
+            if (_rocketCount == 0)
+            {
+               _randomPowerup = Random.Range(0, 6);
 
-            Instantiate(powerups[randomPowerup], posToSpawn, Quaternion.identity);
+                if(_randomPowerup == 5)
+                {
+                    _rocketCount++;
+                }
+            }
+            else
+            {
+                _randomPowerup = Random.Range(0, 5);
+            }
+
+            Instantiate(powerups[_randomPowerup], posToSpawn, Quaternion.identity);
 
             float randomX = Random.Range(3, 8);
 

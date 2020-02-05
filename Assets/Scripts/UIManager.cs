@@ -28,6 +28,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _shieldStrengthText;
 
+    [SerializeField]
+    private Image[] _thrusterBars;
+
     // Start is called before the first frame update
     void Start()
     {        
@@ -86,8 +89,32 @@ public class UIManager : MonoBehaviour
         _ammoText.text = "Ammo: " + ammo;
     }
 
-    public void UpdateShieldStrength(int shieldStrength)
+    public void UpdateShieldStrength(int shieldStrength, bool show)
     {
-       _shieldStrengthText.text = "Shield: " + shieldStrength;        
+        if (show == true)
+        {
+            _shieldStrengthText.gameObject.SetActive(true);
+            
+
+        }else if(show == false)
+        {
+            _shieldStrengthText.gameObject.SetActive(false);
+        }
+
+        _shieldStrengthText.text = "Shield: " + shieldStrength;
+    }   
+
+    public void UpdateThrusterScale(float powerRemaining, bool canBoost)
+    {
+        if (canBoost)
+        {
+            _thrusterBars[(int)Mathf.RoundToInt(powerRemaining)].enabled = false;
+        }else if(canBoost == false)
+        {
+            _thrusterBars[(int)Mathf.RoundToInt(powerRemaining)].enabled = true;
+        }
+        
     }
+
+   
 }

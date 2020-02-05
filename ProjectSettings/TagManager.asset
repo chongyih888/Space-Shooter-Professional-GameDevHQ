@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - EnemyLaser
   - ShieldVisualizer
+  - Rocket
+  - YellowSphere
   layers:
   - Default
   - TransparentFX
