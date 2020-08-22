@@ -86,7 +86,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmo(int ammo)
     {
-        _ammoText.text = "Ammo: " + ammo;
+        _ammoText.text = "Ammo: " + ammo + "/15";
     }
 
     public void UpdateShieldStrength(int shieldStrength, bool show)

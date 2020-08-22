@@ -2038,7 +2038,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Ammo: 15'
+  m_Text: 'Ammo: 15/15'
 --- !u!222 &1726326699
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2262,8 +2262,6 @@ MonoBehaviour:
   _rightEngine: {fileID: 260908939}
   _leftEngine: {fileID: 417364015}
   _laserAudioclip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  _yellowSphereAudioclip: {fileID: 8300000, guid: fef1b4a4e30484f4781c461f6ccd1389,
-    type: 3}
   _ammoCount: 15
   _shieldStrength: 3
   _yellowSpherePrefab: {fileID: 4804322494575524788, guid: 60e9fe8a898e6e54ab371f486aa7de49,
