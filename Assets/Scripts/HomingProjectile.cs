@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class YellowSphere : MonoBehaviour
+public class HomingProjectile : MonoBehaviour
 {
     private Transform _enemy;
 
@@ -15,7 +15,7 @@ public class YellowSphere : MonoBehaviour
     {
         _enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
 
-        if(_enemy == null)
+        if (_enemy == null)
         {
             Debug.LogError("Enemy is null.");
         }
@@ -27,10 +27,11 @@ public class YellowSphere : MonoBehaviour
         CalculateMovement();
 
         Destroy(this.gameObject, 0.5f);
+
     }
 
     void CalculateMovement()
-    {        
+    {
         if (_enemy != null)
         {
             Vector3 direction = _enemy.position - transform.position;

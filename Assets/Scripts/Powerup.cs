@@ -51,7 +51,7 @@ public class Powerup : MonoBehaviour
                         player.HealthBoostActive();
                         break;
                     case 5:
-                        player.YellowSphereBoostActive();
+                        player.HomingProjectileBoostActive();
                         break;
                     default:
                         break;

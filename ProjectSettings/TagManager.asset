@@ -10,6 +10,7 @@ TagManager:
   - ShieldVisualizer
   - Rocket
   - YellowSphere
+  - HomingProjectile
   layers:
   - Default
   - TransparentFX

@@ -824,7 +824,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Score: 50'
+  m_Text: 'Score: 0'
 --- !u!222 &891459433
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2254,7 +2254,7 @@ MonoBehaviour:
   _fireRate: 0.25
   _lives: 3
   _isTripleShotActive: 0
-  _isYellowSphereBoostActive: 0
+  _isHomingProjectileBoostActive: 0
   _isSpeedBoostActive: 0
   _isShieldsActive: 0
   _shieldsVisualizer: {fileID: 902060236}
@@ -2263,8 +2263,9 @@ MonoBehaviour:
   _leftEngine: {fileID: 417364015}
   _laserAudioclip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _ammoCount: 15
+  _hasAmmo: 1
   _shieldStrength: 3
-  _yellowSpherePrefab: {fileID: 4804322494575524788, guid: 60e9fe8a898e6e54ab371f486aa7de49,
+  _homingProjectilePrefab: {fileID: 4804322494575524788, guid: 60e9fe8a898e6e54ab371f486aa7de49,
     type: 3}
   _canLeftShift: 1
   _numberOfBars: 3

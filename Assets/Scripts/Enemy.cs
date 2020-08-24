@@ -112,7 +112,7 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject,2.6f);         
         }
 
-        if(other.tag == "YellowSphere")
+        if(other.tag == "HomingProjectile")
         {
             Destroy(other.gameObject);
             _player.UpdateScore(10);

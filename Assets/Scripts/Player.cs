@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     private bool _isTripleShotActive = false;
 
     [SerializeField]
-    private bool _isYellowSphereBoostActive = false;
+    private bool _isHomingProjectileBoostActive = false;
 
     [SerializeField]
     private bool _isSpeedBoostActive = false;
@@ -60,13 +60,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _ammoCount = 15;
 
+    [SerializeField]
     private bool _hasAmmo = true;
 
     [SerializeField]
     private int _shieldStrength;
 
     [SerializeField]
-    private GameObject _yellowSpherePrefab;
+    private GameObject _homingProjectilePrefab;
 
     private CameraShake _camerashake;
 
@@ -192,9 +193,9 @@ public class Player : MonoBehaviour
             }           
 
         }
-        else if (_isYellowSphereBoostActive == true)
+        else if (_isHomingProjectileBoostActive == true)
         {
-                Instantiate(_yellowSpherePrefab, transform.position, Quaternion.identity);
+                Instantiate(_homingProjectilePrefab, transform.position, Quaternion.identity);
             
         }
         else
@@ -325,6 +326,7 @@ public class Player : MonoBehaviour
     public void BulletsActive()
     {
         _ammoCount = 15;
+        _hasAmmo = true;
         _uiManager.UpdateAmmo(_ammoCount);
     }
 
@@ -351,16 +353,16 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void YellowSphereBoostActive()
+    public void HomingProjectileBoostActive()
     {
-        _isYellowSphereBoostActive = true;
-        StartCoroutine(YellowSphereBoostPowerDownRoutine());
+        _isHomingProjectileBoostActive = true;
+        StartCoroutine(HomingProjectileBoostPowerDownRoutine());
     }
 
-    IEnumerator YellowSphereBoostPowerDownRoutine()
+    IEnumerator HomingProjectileBoostPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        _isYellowSphereBoostActive = false;
+        _isHomingProjectileBoostActive = false;
     }
 }
 
