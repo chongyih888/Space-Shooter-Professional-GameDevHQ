@@ -1754,6 +1754,7 @@ MonoBehaviour:
   - {fileID: 506381047307091, guid: 223e9c432cf7fd14ab53fe88be92a5db, type: 3}
   - {fileID: 3060457757137875977, guid: 20e7f48b85a762a44a40445f1e65b998, type: 3}
   - {fileID: 831186092179999167, guid: 938f222fd36fe18469f30cb44c5da6bb, type: 3}
+  - {fileID: 8597327955540621249, guid: be1fad19f19315b40be4497b4e23919b, type: 3}
   - {fileID: 1833387419258648550, guid: c067dd4f0501df24ca516ca72a8d678c, type: 3}
   _stopSpawning: 0
   _rocketCount: 0
@@ -2256,6 +2257,7 @@ MonoBehaviour:
   _isTripleShotActive: 0
   _isHomingProjectileBoostActive: 0
   _isSpeedBoostActive: 0
+  _isNegativeSpeedBoostActive: 0
   _isShieldsActive: 0
   _shieldsVisualizer: {fileID: 902060236}
   _score: 0

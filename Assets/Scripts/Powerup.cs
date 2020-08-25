@@ -13,10 +13,28 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioClip _powerupAudioClip;
 
+    private Transform _player;
+
+    private void Start()
+    {
+        _player = GameObject.Find("Player").transform;
+
+        if(_player == null)
+        {
+            Debug.LogError("The Player is NULL.");
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.C))
+        {
+            CalculateMovementToPlayer();
+        }
+       
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        
 
         if(transform.position.y < -4.5f)
         {
@@ -64,6 +82,19 @@ public class Powerup : MonoBehaviour
             }
 
             Destroy(this.gameObject);
+        }
+    }
+
+    void CalculateMovementToPlayer()
+    {
+        if (_player != null)
+        {
+            Vector3 direction = _player.position - transform.position;
+           // direction.Normalize();
+
+          // transform.localRotation = Quaternion.LookRotation(direction);
+
+           transform.Translate( direction * _speed * Time.deltaTime);
         }
     }
 }
