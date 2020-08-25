@@ -83,6 +83,13 @@ public class Powerup : MonoBehaviour
 
             Destroy(this.gameObject);
         }
+
+        if(other.tag == "EnemyLaser")
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+
+        }
     }
 
     void CalculateMovementToPlayer()

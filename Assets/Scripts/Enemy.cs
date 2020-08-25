@@ -19,12 +19,12 @@ public class Enemy : MonoBehaviour
 
     private float _fireRate = 3.0f;
     private float _canFire = -1;
-    
+
     // Start is called before the first frame update
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-       
+               
         if(_player == null)
         {
             Debug.LogError("The Player is NULL");
@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
         if(_anim == null)
         {
             Debug.LogError("The animator is NULL");
-        }
+        }       
     }
 
     // Update is called once per frame
@@ -62,6 +62,16 @@ public class Enemy : MonoBehaviour
                 lasers[i].AssignEnemyLaser();
             }
           
+        }
+
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(transform.position, Vector3.down, out hitInfo))
+        {
+            if (hitInfo.collider.gameObject.CompareTag("Powerup"))
+            {
+                Instantiate(_enemyLaserPrefab, transform.position + new Vector3(-0.1f, -6, 0), Quaternion.identity);
+            }
         }
     }
 

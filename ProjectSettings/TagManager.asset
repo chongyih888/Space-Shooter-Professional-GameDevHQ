@@ -11,6 +11,7 @@ TagManager:
   - Rocket
   - YellowSphere
   - HomingProjectile
+  - Powerup
   layers:
   - Default
   - TransparentFX
