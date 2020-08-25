@@ -51,6 +51,9 @@ public class Powerup : MonoBehaviour
                         player.HealthBoostActive();
                         break;
                     case 5:
+                        player.NegativeSpeedBoostActive();
+                        break;
+                    case 6:
                         player.HomingProjectileBoostActive();
                         break;
                     default:

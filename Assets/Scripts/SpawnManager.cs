@@ -53,12 +53,12 @@ public class SpawnManager : MonoBehaviour
 
             if (_rocketCount == 11)
             {
-                _randomPowerup = 5;
+                _randomPowerup = 6;
                 _rocketCount++;
             }
             else
             {
-                _randomPowerup = Random.Range(0, 5);
+                _randomPowerup = Random.Range(0, 6);
                 _rocketCount++;
             }
 

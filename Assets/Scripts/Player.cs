@@ -36,6 +36,9 @@ public class Player : MonoBehaviour
     private bool _isSpeedBoostActive = false;
 
     [SerializeField]
+    private bool _isNegativeSpeedBoostActive = false;
+
+    [SerializeField]
     private bool _isShieldsActive = false;
 
     private SpawnManager _spawnManager;
@@ -287,6 +290,22 @@ public class Player : MonoBehaviour
         _isSpeedBoostActive = false;
         _speed /= _speedMultipler;
     }
+
+    public void NegativeSpeedBoostActive()
+    {
+        _isNegativeSpeedBoostActive = true;
+        _speed /= _speedMultipler;
+        StartCoroutine(NegativeSpeedBoostPowerDownRoutine());
+
+    }
+
+    IEnumerator NegativeSpeedBoostPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isNegativeSpeedBoostActive = false;
+        _speed *= _speedMultipler;
+    }
+
 
     public void ShieldsActive()
     {
