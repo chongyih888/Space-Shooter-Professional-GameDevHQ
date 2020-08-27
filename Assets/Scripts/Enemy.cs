@@ -10,12 +10,19 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private GameObject _enemyLaserPrefab;
 
+    [SerializeField]
+    private GameObject _backLaserPrefab;
+
     private Player _player;
 
     //handle to animator component
     private Animator _anim;
 
     private AudioSource _audioSource;
+
+    private float _canPowerupFire = -1f;
+  
+    private float _firePowerupRate = 0.5f;
 
     private float _fireRate = 3.0f;
     private float _canFire = -1;
@@ -50,29 +57,46 @@ public class Enemy : MonoBehaviour
     {
         CalculateMovement();
 
-        if(Time.time > _canFire)
+        if (Time.time > _canFire)
         {
             _fireRate = Random.Range(3f, 7f);
             _canFire = Time.time + _fireRate;
-            GameObject enemyLaser = Instantiate(_enemyLaserPrefab, transform.position + new Vector3(-0.1f,-6,0), Quaternion.identity);
-            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+            EnemyLaser();
 
-            for (int i = 0; i <  lasers.Length; i++)
-            {
-                lasers[i].AssignEnemyLaser();
-            }
-          
         }
 
-        RaycastHit hitInfo;
+        RaycastHit2D hitPowerupInfo = Physics2D.Raycast(transform.position, Vector2.down);
 
-        if (Physics.Raycast(transform.position, Vector3.down, out hitInfo))
+        if (hitPowerupInfo.collider != null)
         {
-            if (hitInfo.collider.gameObject.CompareTag("Powerup"))
+
+            // Debug.Log(hitPowerupInfo.collider.name);
+
+            if (hitPowerupInfo.collider.gameObject.CompareTag("Powerup"))
             {
-                Instantiate(_enemyLaserPrefab, transform.position + new Vector3(-0.1f, -6, 0), Quaternion.identity);
+                if (Time.time > _canPowerupFire)
+                {
+                    _canPowerupFire = Time.time + _firePowerupRate;
+
+                    EnemyLaser();
+
+                }
             }
         }
+            /*
+                    RaycastHit2D hitPlayerInfo = Physics2D.Raycast(transform.position, Vector2.up);
+
+                    if (hitPlayerInfo.collider != null)
+                    {
+                        Debug.Log(hitPlayerInfo.collider.name);
+
+                        if (hitPlayerInfo.collider.gameObject.CompareTag("Player"))
+                        {
+                            Instantiate(_backLaserPrefab, transform.position, Quaternion.identity);
+                        }
+                    }
+               */
+        
     }
 
     void CalculateMovement()
@@ -84,6 +108,17 @@ public class Enemy : MonoBehaviour
             float randomX = Random.Range(-8f, 8f);
 
             transform.position = new Vector3(randomX, 7, 0);
+        }
+    }
+
+    void EnemyLaser()
+    {
+        GameObject enemyLaser = Instantiate(_enemyLaserPrefab, transform.position + new Vector3(-0.1f, -6, 0), Quaternion.identity);
+        Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+        for (int i = 0; i < lasers.Length; i++)
+        {
+            lasers[i].AssignEnemyLaser();
         }
     }
 

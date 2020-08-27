@@ -86,6 +86,7 @@ public class Powerup : MonoBehaviour
 
         if(other.tag == "EnemyLaser")
         {
+            Destroy(GetComponent<Collider2D>());
             Destroy(other.gameObject);
             Destroy(this.gameObject);
 

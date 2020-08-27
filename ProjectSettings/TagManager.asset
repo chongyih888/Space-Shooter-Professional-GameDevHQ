@@ -12,6 +12,7 @@ TagManager:
   - YellowSphere
   - HomingProjectile
   - Powerup
+  - BackLaser
   layers:
   - Default
   - TransparentFX

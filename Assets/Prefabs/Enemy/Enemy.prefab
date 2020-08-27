@@ -146,7 +146,8 @@ MonoBehaviour:
   _speed: 4
   _enemyLaserPrefab: {fileID: 4651620256485323031, guid: 837140fd7cec5a44db303909aafdb599,
     type: 3}
-  _shieldVisualizer: {fileID: 0}
+  _backLaserPrefab: {fileID: 6966850217899771727, guid: 913726d37479ebc48b7ebbf6e8826443,
+    type: 3}
 --- !u!95 &3143584855945962048
 Animator:
   serializedVersion: 3
