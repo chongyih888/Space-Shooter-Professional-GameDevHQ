@@ -20,12 +20,15 @@ public class Enemy : MonoBehaviour
 
     private AudioSource _audioSource;
 
-    private float _canPowerupFire = -1f;
+    private float _canOtherFire = -1f;
   
-    private float _firePowerupRate = 0.5f;
+    private float _fireOtherRate = 3.0f;
 
     private float _fireRate = 3.0f;
     private float _canFire = -1;
+
+    [SerializeField]
+    private AudioClip _backLaserAudioclip;
 
     // Start is called before the first frame update
     void Start()
@@ -74,28 +77,35 @@ public class Enemy : MonoBehaviour
 
             if (hitPowerupInfo.collider.gameObject.CompareTag("Powerup"))
             {
-                if (Time.time > _canPowerupFire)
+                if (Time.time > _canOtherFire)
                 {
-                    _canPowerupFire = Time.time + _firePowerupRate;
-
-                    EnemyLaser();
-
+                    _canOtherFire = Time.time + _fireOtherRate;
+                    EnemyLaser();                
                 }
             }
         }
-            /*
-                    RaycastHit2D hitPlayerInfo = Physics2D.Raycast(transform.position, Vector2.up);
+          
+        RaycastHit2D hitPlayerInfo = Physics2D.Raycast(transform.position, Vector2.up);
 
-                    if (hitPlayerInfo.collider != null)
-                    {
-                        Debug.Log(hitPlayerInfo.collider.name);
+        if (hitPlayerInfo.collider != null)
+        {
+           // Debug.Log(hitPlayerInfo.collider.name);
 
-                        if (hitPlayerInfo.collider.gameObject.CompareTag("Player"))
-                        {
-                            Instantiate(_backLaserPrefab, transform.position, Quaternion.identity);
-                        }
-                    }
-               */
+            if (hitPlayerInfo.collider.gameObject.CompareTag("Player"))
+            {
+                if (Time.time > _canOtherFire)
+                {
+                    _canOtherFire = Time.time + _fireOtherRate;
+
+                    AudioSource.PlayClipAtPoint(_backLaserAudioclip, transform.position);
+
+                    GameObject enemyBackLaser = Instantiate(_backLaserPrefab, transform.position + new Vector3(0, 1.8f, 0), Quaternion.identity);
+
+                    enemyBackLaser.GetComponent<Laser>().AssignEnemyLaserPlayer();
+                }
+
+            }
+        }             
         
     }
 
@@ -113,6 +123,8 @@ public class Enemy : MonoBehaviour
 
     void EnemyLaser()
     {
+        AudioSource.PlayClipAtPoint(_backLaserAudioclip, transform.position);
+
         GameObject enemyLaser = Instantiate(_enemyLaserPrefab, transform.position + new Vector3(-0.1f, -6, 0), Quaternion.identity);
         Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
@@ -136,6 +148,7 @@ public class Enemy : MonoBehaviour
             //trigger anim
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
+          
             _audioSource.Play();
 
             Destroy(GetComponent<Collider2D>());
@@ -152,6 +165,7 @@ public class Enemy : MonoBehaviour
             //trigger anim
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
+           
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject,2.6f);         
@@ -164,6 +178,7 @@ public class Enemy : MonoBehaviour
 
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
+           
             _audioSource.Play();
 
             Destroy(GetComponent<Collider2D>());

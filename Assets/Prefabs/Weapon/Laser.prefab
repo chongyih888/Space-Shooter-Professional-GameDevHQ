@@ -142,3 +142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 8
+  _isEnemyLaser: 0
+  _isPlayer: 0
+  _backLaserAudioclip: {fileID: 8300000, guid: 8d535ad6cdb77834a825f993b95d9bc9, type: 3}
