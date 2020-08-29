@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
     private AudioSource _audioSource;
 
     private float _canOtherFire = -1f;
-  
+
     private float _fireOtherRate = 3.0f;
 
     private float _fireRate = 3.0f;
@@ -30,18 +30,22 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private AudioClip _backLaserAudioclip;
 
+    private Transform _playerTransform;
+
+    private float _distance;
+
     // Start is called before the first frame update
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-               
-        if(_player == null)
+
+        if (_player == null)
         {
             Debug.LogError("The Player is NULL");
         }
 
         _audioSource = GetComponent<AudioSource>();
-        if(_audioSource == null)
+        if (_audioSource == null)
         {
             Debug.LogError("The AudioSource is NULL");
         }
@@ -49,10 +53,17 @@ public class Enemy : MonoBehaviour
         //assign the component to anim
         _anim = GetComponent<Animator>();
 
-        if(_anim == null)
+        if (_anim == null)
         {
             Debug.LogError("The animator is NULL");
-        }       
+        }
+
+        _playerTransform = GameObject.Find("Player").transform;
+
+        if (_playerTransform == null)
+        {
+            Debug.LogError("The Player Transform is NULL.");
+        }
     }
 
     // Update is called once per frame
@@ -80,16 +91,16 @@ public class Enemy : MonoBehaviour
                 if (Time.time > _canOtherFire)
                 {
                     _canOtherFire = Time.time + _fireOtherRate;
-                    EnemyLaser();                
+                    EnemyLaser();
                 }
             }
         }
-          
+
         RaycastHit2D hitPlayerInfo = Physics2D.Raycast(transform.position, Vector2.up);
 
         if (hitPlayerInfo.collider != null)
         {
-           // Debug.Log(hitPlayerInfo.collider.name);
+            // Debug.Log(hitPlayerInfo.collider.name);
 
             if (hitPlayerInfo.collider.gameObject.CompareTag("Player"))
             {
@@ -105,84 +116,108 @@ public class Enemy : MonoBehaviour
                 }
 
             }
-        }             
-        
-    }
-
-    void CalculateMovement()
-    {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
-        if (transform.position.y < -5f)
-        {
-            float randomX = Random.Range(-8f, 8f);
-
-            transform.position = new Vector3(randomX, 7, 0);
         }
-    }
 
-    void EnemyLaser()
-    {
-        AudioSource.PlayClipAtPoint(_backLaserAudioclip, transform.position);
-
-        GameObject enemyLaser = Instantiate(_enemyLaserPrefab, transform.position + new Vector3(-0.1f, -6, 0), Quaternion.identity);
-        Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-
-        for (int i = 0; i < lasers.Length; i++)
+        if (_playerTransform != null)
         {
-            lasers[i].AssignEnemyLaser();
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Player")
-        {
-            Player player = other.transform.GetComponent<Player>();
-
-            if (player != null)
+            _distance = Vector3.Distance(transform.position, _playerTransform.position);
+                    
+            if (_distance < 3f)
             {
-                player.Damage();                
+                CalculateMovementToPlayer();
+            }
+        }
+
+        void CalculateMovement()
+        {
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
+
+            if (transform.position.y < -5f)
+            {
+                float randomX = Random.Range(-8f, 8f);
+
+                transform.position = new Vector3(randomX, 7, 0);
+            }
+        }
+
+        void EnemyLaser()
+        {
+            AudioSource.PlayClipAtPoint(_backLaserAudioclip, transform.position);
+
+            GameObject enemyLaser = Instantiate(_enemyLaserPrefab, transform.position + new Vector3(-0.1f, -6, 0), Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].AssignEnemyLaser();
+            }
+        }
+    }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.tag == "Player")
+            {
+                Player player = other.transform.GetComponent<Player>();
+
+                if (player != null)
+                {
+                    player.Damage();
+                }
+
+                //trigger anim
+                _anim.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+
+                _audioSource.Play();
+
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.6f);
             }
 
-            //trigger anim
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-          
-            _audioSource.Play();
 
-            Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.6f);
+            if (other.tag == "Laser")
+            {
+                Destroy(other.gameObject);
+                //Add 10 to score
+                _player.UpdateScore(10);
+
+                //trigger anim
+                _anim.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+
+                _audioSource.Play();
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.6f);
+            }
+
+            if (other.tag == "HomingProjectile")
+            {
+                Destroy(other.gameObject);
+                _player.UpdateScore(10);
+
+                _anim.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+
+                _audioSource.Play();
+
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.6f);
+            }
         }
 
-
-        if(other.tag == "Laser")
+        void CalculateMovementToPlayer()
         {
-            Destroy(other.gameObject);
-            //Add 10 to score
-            _player.UpdateScore(10);
-                        
-            //trigger anim
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-           
-            _audioSource.Play();
-            Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject,2.6f);         
-        }
+            if (_playerTransform != null)
+            {
+                Vector3 direction = _playerTransform.position - transform.position;
+                // direction.Normalize();
 
-        if(other.tag == "HomingProjectile")
-        {
-            Destroy(other.gameObject);
-            _player.UpdateScore(10);
+                // transform.localRotation = Quaternion.LookRotation(direction);
 
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-           
-            _audioSource.Play();
-
-            Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.6f);
+                transform.Translate(direction * _speed * Time.deltaTime);
+            }
         }
     }
-}
+
+
