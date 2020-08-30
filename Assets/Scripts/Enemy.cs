@@ -32,8 +32,6 @@ public class Enemy : MonoBehaviour
 
     private Transform _playerTransform;
 
-    private float _distance;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -120,9 +118,9 @@ public class Enemy : MonoBehaviour
 
         if (_playerTransform != null)
         {
-            _distance = Vector3.Distance(transform.position, _playerTransform.position);
+            float distance = Vector3.Distance(transform.position, _playerTransform.position);
                     
-            if (_distance < 3f)
+            if (distance < 3f)
             {
                 CalculateMovementToPlayer();
             }
