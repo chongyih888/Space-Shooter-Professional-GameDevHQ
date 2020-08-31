@@ -116,11 +116,26 @@ public class Enemy : MonoBehaviour
             }
         }
 
+        Vector2 size = new Vector2(3, 3);
+
+        RaycastHit2D hitPlayerLaserInfo = Physics2D.BoxCast(transform.position, size, 0.0f, Vector2.down);
+
+        if (hitPlayerLaserInfo.collider != null)
+        {
+            //Debug.Log(hitPlayerLaserInfo.collider.name);
+
+            if (hitPlayerLaserInfo.collider.gameObject.CompareTag("Laser"))
+            {
+                EnemyMove();
+            }
+        }
+
+
         if (_playerTransform != null)
         {
             float distance = Vector3.Distance(transform.position, _playerTransform.position);
-                    
-            if (distance < 3f)
+
+            if (distance < 3.0f)
             {
                 CalculateMovementToPlayer();
             }
@@ -152,70 +167,86 @@ public class Enemy : MonoBehaviour
         }
     }
 
-        private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
         {
-            if (other.tag == "Player")
+            Player player = other.transform.GetComponent<Player>();
+
+            if (player != null)
             {
-                Player player = other.transform.GetComponent<Player>();
-
-                if (player != null)
-                {
-                    player.Damage();
-                }
-
-                //trigger anim
-                _anim.SetTrigger("OnEnemyDeath");
-                _speed = 0;
-
-                _audioSource.Play();
-
-                Destroy(GetComponent<Collider2D>());
-                Destroy(this.gameObject, 2.6f);
+                player.Damage();
             }
 
+            //trigger anim
+            _anim.SetTrigger("OnEnemyDeath");
+            _speed = 0;
 
-            if (other.tag == "Laser")
-            {
-                Destroy(other.gameObject);
-                //Add 10 to score
-                _player.UpdateScore(10);
+            _audioSource.Play();
 
-                //trigger anim
-                _anim.SetTrigger("OnEnemyDeath");
-                _speed = 0;
-
-                _audioSource.Play();
-                Destroy(GetComponent<Collider2D>());
-                Destroy(this.gameObject, 2.6f);
-            }
-
-            if (other.tag == "HomingProjectile")
-            {
-                Destroy(other.gameObject);
-                _player.UpdateScore(10);
-
-                _anim.SetTrigger("OnEnemyDeath");
-                _speed = 0;
-
-                _audioSource.Play();
-
-                Destroy(GetComponent<Collider2D>());
-                Destroy(this.gameObject, 2.6f);
-            }
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject, 2.6f);
         }
 
-        void CalculateMovementToPlayer()
+
+        if (other.tag == "Laser")
         {
-            if (_playerTransform != null)
-            {
-                Vector3 direction = _playerTransform.position - transform.position;
-                // direction.Normalize();
+            Destroy(other.gameObject);
+            //Add 10 to score
+            _player.UpdateScore(10);
 
-                // transform.localRotation = Quaternion.LookRotation(direction);
+            //trigger anim
+            _anim.SetTrigger("OnEnemyDeath");
+            _speed = 0;
 
-                transform.Translate(direction * _speed * Time.deltaTime);
-            }
+            _audioSource.Play();
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject, 2.6f);
+        }
+
+        if (other.tag == "HomingProjectile")
+        {
+            Destroy(other.gameObject);
+            _player.UpdateScore(10);
+
+            _anim.SetTrigger("OnEnemyDeath");
+            _speed = 0;
+
+            _audioSource.Play();
+
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject, 2.6f);
         }
     }
+
+    void CalculateMovementToPlayer()
+    {
+        if (_playerTransform != null)
+        {
+            Vector3 direction = _playerTransform.position - transform.position;
+            // direction.Normalize();
+
+            // transform.localRotation = Quaternion.LookRotation(direction);
+
+            transform.Translate(direction * _speed * Time.deltaTime);
+        }
+    }
+
+    void EnemyMove(){
+
+        int randomMove = Random.Range(0, 2);
+
+        if (randomMove == 0)
+        {
+
+            transform.Translate(_speed * new Vector3(-5f, 0, 0) * Time.deltaTime);
+        }
+        else { 
+            transform.Translate(_speed * new Vector3(5f, 0, 0) * Time.deltaTime);
+        }
+        
+        
+    }
+}
 
 
