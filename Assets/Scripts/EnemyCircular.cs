@@ -5,13 +5,13 @@ using UnityEngine;
 public class EnemyCircular : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = -50.0f;
+    private float _speed = 4.0f;
 
     [SerializeField]
-    private float _verticalSpeed = 2;
+    private float _verticalSpeed = 0.015f;
 
     [SerializeField]
-    private float _verticalAmplitude = 0.125f;
+    private float _verticalAmplitude = 0.015f;
 
     private Vector3 _sineVer;
 
@@ -28,6 +28,8 @@ public class EnemyCircular : MonoBehaviour
 
     private AudioSource _audioSource;
 
+    private Player _player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +42,13 @@ public class EnemyCircular : MonoBehaviour
         else
         {
             _audioSource.clip = _enemyCircularAudioclip;
+        }
+
+        _player = GameObject.Find("Player").GetComponent<Player>();
+
+        if (_player == null)
+        {
+            Debug.LogError("The Player is NULL");
         }
     }
 
@@ -62,5 +71,35 @@ public class EnemyCircular : MonoBehaviour
         _time += Time.deltaTime;
         _sineVer.y = Mathf.Sin(_time * _verticalSpeed) * _verticalAmplitude;
         transform.position = new Vector3(transform.position.x + _speed * Time.deltaTime, transform.position.y + _sineVer.y,transform.position.z);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Laser")
+        {
+            Destroy(other.gameObject);
+            
+            _player.UpdateScore(10);
+
+            _speed = 0;
+          
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject);
+        }
+
+        if (other.tag == "Player")
+        {
+            Player player = other.transform.GetComponent<Player>();
+
+            if (player != null)
+            {
+                player.Damage();
+            }
+
+            _speed = 0;
+
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject);
+        }
     }
 }
