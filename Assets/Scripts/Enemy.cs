@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
     private float _canFire = -1;
 
     [SerializeField]
-    private AudioClip _backLaserAudioclip;
+    private AudioClip _enemyLaserAudioclip;
 
     private Transform _playerTransform;
 
@@ -106,7 +106,7 @@ public class Enemy : MonoBehaviour
                 {
                     _canOtherFire = Time.time + _fireOtherRate;
 
-                    AudioSource.PlayClipAtPoint(_backLaserAudioclip, transform.position);
+                    AudioSource.PlayClipAtPoint(_enemyLaserAudioclip, transform.position);
 
                     GameObject enemyBackLaser = Instantiate(_backLaserPrefab, transform.position + new Vector3(0, 1.8f, 0), Quaternion.identity);
 
@@ -155,7 +155,7 @@ public class Enemy : MonoBehaviour
 
         void EnemyLaser()
         {
-            AudioSource.PlayClipAtPoint(_backLaserAudioclip, transform.position);
+            AudioSource.PlayClipAtPoint(_enemyLaserAudioclip, transform.position);
 
             GameObject enemyLaser = Instantiate(_enemyLaserPrefab, transform.position + new Vector3(-0.1f, -6, 0), Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();

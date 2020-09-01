@@ -13,6 +13,9 @@ TagManager:
   - HomingProjectile
   - Powerup
   - BackLaser
+  - Boss
+  - BossBubble
+  - Bomb
   layers:
   - Default
   - TransparentFX

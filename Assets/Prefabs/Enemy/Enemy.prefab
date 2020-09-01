@@ -148,7 +148,8 @@ MonoBehaviour:
     type: 3}
   _backLaserPrefab: {fileID: 256781364191663095, guid: ea129978f2298704a83ec1a613b16408,
     type: 3}
-  _backLaserAudioclip: {fileID: 8300000, guid: 8d535ad6cdb77834a825f993b95d9bc9, type: 3}
+  _enemyLaserAudioclip: {fileID: 8300000, guid: 8d535ad6cdb77834a825f993b95d9bc9,
+    type: 3}
 --- !u!95 &3143584855945962048
 Animator:
   serializedVersion: 3

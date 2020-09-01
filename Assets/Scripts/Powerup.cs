@@ -11,7 +11,7 @@ public class Powerup : MonoBehaviour
     private int powerupID;
 
     [SerializeField]
-    private AudioClip _powerupAudioClip;
+    private AudioClip _powerupAudioclip;
 
     private Transform _player;
 
@@ -48,7 +48,7 @@ public class Powerup : MonoBehaviour
         {
             Player player = other.transform.GetComponent<Player>();
 
-            AudioSource.PlayClipAtPoint(_powerupAudioClip, transform.position);
+            AudioSource.PlayClipAtPoint(_powerupAudioclip, transform.position);
 
             if(player != null)
             {
