@@ -84,7 +84,7 @@ public class SpawnManager : MonoBehaviour
 
         while(_stopSpawning == false)
         {
-            Vector3 posToSpawn = new Vector3(-8f, 3.5f, 0);
+            Vector3 posToSpawn = new Vector3(-11.5f, 2.2f, 0);
 
             GameObject newEnemy = Instantiate(_enemyCircularPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
