@@ -29,6 +29,7 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnSecondWaveRoutine());
+        StartCoroutine(SpawnThirdFinalWaveRoutine());
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -91,5 +92,16 @@ public class SpawnManager : MonoBehaviour
 
             yield return new WaitForSeconds(10.0f);
         }
+    }
+
+    IEnumerator SpawnThirdFinalWaveRoutine()
+    {
+        yield return new WaitForSeconds(40.0f);
+
+        while(_stopSpawning == false)
+        {
+
+        }
+
     }
 }
