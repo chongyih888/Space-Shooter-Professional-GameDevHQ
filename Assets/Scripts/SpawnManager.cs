@@ -8,6 +8,9 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyPrefab;
 
     [SerializeField]
+    private GameObject _enemyCircularPrefab;
+
+    [SerializeField]
     private GameObject _enemyContainer;
 
     [SerializeField]
@@ -25,7 +28,7 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
-
+        StartCoroutine(SpawnSecondWaveRoutine());
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -73,5 +76,20 @@ public class SpawnManager : MonoBehaviour
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
+    }
+
+    IEnumerator SpawnSecondWaveRoutine()
+    {
+        yield return new WaitForSeconds(20.0f);
+
+        while(_stopSpawning == false)
+        {
+            Vector3 posToSpawn = new Vector3(-8f, 3.5f, 0);
+
+            GameObject newEnemy = Instantiate(_enemyCircularPrefab, posToSpawn, Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
+
+            yield return new WaitForSeconds(10.0f);
+        }
     }
 }

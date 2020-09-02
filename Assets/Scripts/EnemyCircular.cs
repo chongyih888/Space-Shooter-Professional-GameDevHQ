@@ -71,6 +71,11 @@ public class EnemyCircular : MonoBehaviour
         _time += Time.deltaTime;
         _sineVer.y = Mathf.Sin(_time * _verticalSpeed) * _verticalAmplitude;
         transform.position = new Vector3(transform.position.x + _speed * Time.deltaTime, transform.position.y + _sineVer.y,transform.position.z);
+
+        if (transform.position.x > 11.5f)
+        {
+            transform.position = new Vector3(-11.5f, 2.2f, 0);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
