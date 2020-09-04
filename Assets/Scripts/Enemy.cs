@@ -32,6 +32,12 @@ public class Enemy : MonoBehaviour
 
     private Transform _playerTransform;
 
+    [SerializeField]
+    private bool _isEnemyShield = false;
+
+    [SerializeField]
+    private GameObject _enemyShield;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -173,6 +179,40 @@ public class Enemy : MonoBehaviour
         {
             Player player = other.transform.GetComponent<Player>();
 
+            if (_isEnemyShield == true)
+            {
+                _enemyShield.SetActive(false);
+
+                _isEnemyShield = false;
+
+                if (player != null)
+                {
+                    player.Damage();
+                }
+                              
+                if (player != null)
+                {
+                    float distance = Vector3.Distance(transform.position, _playerTransform.position);
+
+                    if (distance < 3.0f)
+                    {
+                        CalculateMovementToPlayer();
+                    }
+                                      
+                    player.Damage();
+                    _anim.SetTrigger("OnEnemyDeath");
+                    _speed = 0;
+
+                    _audioSource.Play();
+
+                    Destroy(GetComponent<Collider2D>());
+                    Destroy(this.gameObject, 2.6f);
+                }
+
+                return;
+            }
+
+           
             if (player != null)
             {
                 player.Damage();
@@ -191,6 +231,13 @@ public class Enemy : MonoBehaviour
 
         if (other.tag == "Laser")
         {
+            if (_isEnemyShield == true)
+            {
+                _enemyShield.SetActive(false);
+                _isEnemyShield = false;
+                return;
+            }
+
             Destroy(other.gameObject);
             //Add 10 to score
             _player.UpdateScore(10);
@@ -206,6 +253,13 @@ public class Enemy : MonoBehaviour
 
         if (other.tag == "HomingProjectile")
         {
+            if (_isEnemyShield == true)
+            {
+                _enemyShield.SetActive(false);
+                _isEnemyShield = false;
+                return;
+            }
+
             Destroy(other.gameObject);
             _player.UpdateScore(10);
 
@@ -217,6 +271,11 @@ public class Enemy : MonoBehaviour
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.6f);
         }
+    }
+
+    public void ShieldStatus()
+    {
+        _isEnemyShield = true;
     }
 
     void CalculateMovementToPlayer()

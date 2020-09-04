@@ -8,6 +8,9 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyPrefab;
 
     [SerializeField]
+    private GameObject _enemyShieldPrefab;
+
+    [SerializeField]
     private GameObject _enemyCircularPrefab;
 
     [SerializeField]
@@ -37,11 +40,23 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
 
         while (_stopSpawning == false){
+
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
 
-            GameObject newEnemy = Instantiate(_enemyPrefab,posToSpawn,Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;
+            int randomSpawn = Random.Range(0, 2);
 
+            if (randomSpawn == 0)
+            {
+                GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+                newEnemy.transform.parent = _enemyContainer.transform;
+            }
+            else
+            {
+                GameObject newEnemy = Instantiate(_enemyShieldPrefab, posToSpawn, Quaternion.identity);
+                newEnemy.transform.parent = _enemyContainer.transform;
+                newEnemy.transform.GetComponent<Enemy>().ShieldStatus();
+            }
+                 
             yield return new WaitForSeconds(5.0f);
         }
     }
