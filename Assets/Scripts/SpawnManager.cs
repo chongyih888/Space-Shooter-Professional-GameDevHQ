@@ -14,6 +14,9 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyCircularPrefab;
 
     [SerializeField]
+    private GameObject _enemyBoss;
+
+    [SerializeField]
     private GameObject _enemyContainer;
 
     [SerializeField]
@@ -23,16 +26,19 @@ public class SpawnManager : MonoBehaviour
     private bool _stopSpawning = false;
 
     [SerializeField]
-    private int _rocketCount = 0;
-
+    private int _powerupCounter = 0;
+        
     private int _randomPowerup;
     
     public void StartSpawning()
-    {
-        StartCoroutine(SpawnEnemyRoutine());
-        StartCoroutine(SpawnPowerupRoutine());
-        StartCoroutine(SpawnSecondWaveRoutine());
+    {        
+       // StartCoroutine(SpawnEnemyRoutine());
+       // StartCoroutine(SpawnSecondWaveRoutine());
         StartCoroutine(SpawnThirdFinalWaveRoutine());
+
+        StartCoroutine(SpawnPowerupRoutine());
+        StartCoroutine(SpawnPowerupSecondRoutine());
+        StartCoroutine(SpawnPowerupThirdRoutine());
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -67,20 +73,29 @@ public class SpawnManager : MonoBehaviour
 
         while (_stopSpawning == false)
         {
-
             Vector3 posToSpawn = new Vector3(Random.Range(-8f,8f), 7, 0);
 
-            if (_rocketCount == 11)
+            if(_powerupCounter % 4 == 0)
+            {
+                _randomPowerup = 4;
+                _powerupCounter++;
+            }
+            else if(_powerupCounter % 11 == 0)
+            {
+                _randomPowerup = 5;
+                _powerupCounter++;
+            }
+            else if(_powerupCounter % 13 == 0)
             {
                 _randomPowerup = 6;
-                _rocketCount++;
+                _powerupCounter++;
             }
             else
             {
-                _randomPowerup = Random.Range(0, 6);
-                _rocketCount++;
+                _randomPowerup = Random.Range(0, 4);
+                _powerupCounter++;
             }
-
+                       
             Instantiate(powerups[_randomPowerup], posToSpawn, Quaternion.identity);
 
             float randomX = Random.Range(3, 8);
@@ -111,12 +126,56 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnThirdFinalWaveRoutine()
     {
-        yield return new WaitForSeconds(40.0f);
+        yield return new WaitForSeconds(3.0f);
 
-        while(_stopSpawning == false)
+        OnPlayerDeath();
+
+        for (int j = 0; j < 3; j++)
         {
-
+               Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                               
+               GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+               newEnemy.transform.parent = _enemyContainer.transform;
         }
 
+        yield return new WaitForSeconds(15.0f);
+
+        Instantiate(_enemyBoss,new Vector3(0,8,0),Quaternion.identity);
+    }
+
+    IEnumerator SpawnPowerupSecondRoutine()
+    {
+        yield return new WaitForSeconds(20.0f);
+
+        while (_stopSpawning == false)
+        {
+            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                                
+            _randomPowerup = Random.Range(0, 5);                     
+
+            Instantiate(powerups[_randomPowerup], posToSpawn, Quaternion.identity);
+
+            float randomX = Random.Range(3, 8);
+
+            yield return new WaitForSeconds(randomX);
+        }
+    }
+
+    IEnumerator SpawnPowerupThirdRoutine()
+    {
+        yield return new WaitForSeconds(40.0f);
+
+        while (_stopSpawning == false)
+        {
+            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                       
+            _randomPowerup = Random.Range(0, 5);
+               
+            Instantiate(powerups[_randomPowerup], posToSpawn, Quaternion.identity);
+
+            float randomX = Random.Range(3, 8);
+
+            yield return new WaitForSeconds(randomX);
+        }
     }
 }

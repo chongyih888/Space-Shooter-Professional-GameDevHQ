@@ -18,6 +18,9 @@ public class UIManager : MonoBehaviour
     private Text _gameOverText;
 
     [SerializeField]
+    private Text _winText;
+
+    [SerializeField]
     private Text _restartText;
 
     private GameManager _gameManager;
@@ -64,6 +67,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void WinSequence()
+    {
+        _gameManager.GameOver();
+        _restartText.gameObject.SetActive(true);
+        _winText.gameObject.SetActive(true);
+        StartCoroutine(WinFlickerRoutine());
+    }
+
     void GameOverSequence()
     {
         _gameManager.GameOver();
@@ -71,6 +82,17 @@ public class UIManager : MonoBehaviour
         _restartText.gameObject.SetActive(true);
         StartCoroutine(GameOverFlickerRoutine());
 
+    }
+
+    IEnumerator WinFlickerRoutine()
+    {
+        while (true)
+        {
+            _winText.text = "YOU WIN";
+            yield return new WaitForSeconds(0.5f);
+            _winText.text = "";
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     IEnumerator GameOverFlickerRoutine()

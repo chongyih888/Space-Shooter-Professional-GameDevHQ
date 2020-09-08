@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6250515673209190594}
   - component: {fileID: 6333374039976911527}
   m_Layer: 0
-  m_Name: Homing_Projectile
+  m_Name: homing_projectile
   m_TagString: YellowSphere
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

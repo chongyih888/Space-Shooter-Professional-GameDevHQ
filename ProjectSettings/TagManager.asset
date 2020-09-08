@@ -16,6 +16,12 @@ TagManager:
   - Boss
   - BossBubble
   - Bomb
+  - EnemyShieldVisualizer
+  - Bubble
+  - MiniBoss
+  - EnemyEscort
+  - EnemyBoss
+  - SmallBubble
   layers:
   - Default
   - TransparentFX
