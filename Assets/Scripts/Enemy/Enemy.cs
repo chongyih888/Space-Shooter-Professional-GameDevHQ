@@ -283,10 +283,7 @@ public class Enemy : MonoBehaviour
         if (_playerTransform != null)
         {
             Vector3 direction = _playerTransform.position - transform.position;
-            // direction.Normalize();
-
-            // transform.localRotation = Quaternion.LookRotation(direction);
-
+           
             transform.Translate(direction * _speed * Time.deltaTime);
         }
     }
@@ -297,16 +294,12 @@ public class Enemy : MonoBehaviour
 
         if (randomMove == 0)
         {
-
             transform.Translate(_speed * new Vector3(-5f, 0, 0) * Time.deltaTime);
         }
         else { 
             transform.Translate(_speed * new Vector3(5f, 0, 0) * Time.deltaTime);
-        }
-        
-        
-    }
-       
+        }        
+    }       
 }
 
 

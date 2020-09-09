@@ -78,7 +78,9 @@ public class Player : MonoBehaviour
     private bool _canLeftShift = true;
 
     [SerializeField]
-    private float _numberOfBars = 3;   
+    private float _numberOfBars = 3;
+
+    private WaitForSeconds _delayYield;
 
     // Start is called before the first frame update
     void Start()
@@ -113,7 +115,8 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("The camerashake is NULL");
         }
-              
+
+        _delayYield = new WaitForSeconds(5.0f);
     }
 
     // Update is called once per frame
@@ -123,14 +126,12 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire )
         {
-            FireLaser();           
-            
+            FireLaser();                 
         }
                 
 
         if (Input.GetKey(KeyCode.LeftShift) && (_numberOfBars > 0) && (_canLeftShift == true))
-        {
-                  
+        {                  
             _thrusterSpeedBoost = 1.5f;
 
             _uiManager.UpdateThrusterScale(_numberOfBars,_canLeftShift);
@@ -142,7 +143,9 @@ public class Player : MonoBehaviour
                 _canLeftShift = false;
                               
             }
-        }else if (!Input.GetKey(KeyCode.LeftShift) && _numberOfBars < 3 && _canLeftShift == false)
+
+        }
+        else if (!Input.GetKey(KeyCode.LeftShift) && _numberOfBars < 3 && _canLeftShift == false)
         {
             _uiManager.UpdateThrusterScale(_numberOfBars, _canLeftShift);
 
@@ -152,7 +155,6 @@ public class Player : MonoBehaviour
             {
                 _canLeftShift = true;
             }
-
         }
         else
         {
@@ -192,14 +194,11 @@ public class Player : MonoBehaviour
                 Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
                 AmmoStatus();
                 _audioSource.Play();
-
             }           
-
         }
         else if (_isHomingProjectileBoostActive == true)
         {
                 Instantiate(_homingProjectilePrefab, transform.position, Quaternion.identity);
-            
         }
         else
         {
@@ -208,8 +207,7 @@ public class Player : MonoBehaviour
                 Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.55f, 0), Quaternion.identity);
                 AmmoStatus();
                 _audioSource.Play();
-            }          
-           
+            }                     
         }
              
 
@@ -231,7 +229,6 @@ public class Player : MonoBehaviour
             }
 
             return;
-
         }
     
         _lives--;
@@ -272,7 +269,7 @@ public class Player : MonoBehaviour
 
     IEnumerator TripleShotPowerDownRoutine()
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return _delayYield;
         _isTripleShotActive = false;
     }
 
@@ -286,7 +283,7 @@ public class Player : MonoBehaviour
 
     IEnumerator SpeedBoostPowerDownRoutine()
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return _delayYield;
         _isSpeedBoostActive = false;
         _speed /= _speedMultipler;
     }
@@ -301,7 +298,7 @@ public class Player : MonoBehaviour
 
     IEnumerator NegativeSpeedBoostPowerDownRoutine()
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return _delayYield;
         _isNegativeSpeedBoostActive = false;
         _speed *= _speedMultipler;
     }
@@ -380,7 +377,7 @@ public class Player : MonoBehaviour
 
     IEnumerator HomingProjectileBoostPowerDownRoutine()
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return _delayYield;
         _isHomingProjectileBoostActive = false;
     }
 }

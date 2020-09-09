@@ -13,21 +13,17 @@ public class CameraShake : MonoBehaviour
     private float shakeRange;
     Vector3 originalPosition;
 
+    private WaitForSeconds _delayYield;
 
     // Start is called before the first frame update
     void Start()
     {
         camTransform = this.transform;
         originalPosition = camTransform.position;
+
+        _delayYield = null;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-       
-
-    }
-
+    
     public void Shake()
     {
         StartCoroutine(ShakeCamera());
@@ -47,7 +43,7 @@ public class CameraShake : MonoBehaviour
 
             elapseTime += Time.deltaTime;
 
-            yield return null;
+            yield return _delayYield;
         }
 
         camTransform.position = originalPosition;

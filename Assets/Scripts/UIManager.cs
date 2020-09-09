@@ -34,6 +34,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Image[] _thrusterBars;
 
+    private WaitForSeconds _yield;
+
     // Start is called before the first frame update
     void Start()
     {        
@@ -47,6 +49,8 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogError("The GameMamanger is NULL");
         }
+
+        _yield = new WaitForSeconds(0.5f);
 
     }
 
@@ -89,9 +93,9 @@ public class UIManager : MonoBehaviour
         while (true)
         {
             _winText.text = "YOU WIN";
-            yield return new WaitForSeconds(0.5f);
+            yield return _yield;
             _winText.text = "";
-            yield return new WaitForSeconds(0.5f);
+            yield return _yield;
         }
     }
 
@@ -100,9 +104,9 @@ public class UIManager : MonoBehaviour
         while (true)
         {
             _gameOverText.text = "GAME OVER";
-            yield return new WaitForSeconds(0.5f);
+            yield return _yield;
             _gameOverText.text = "";
-            yield return new WaitForSeconds(0.5f);
+            yield return _yield;
         }
     }
 

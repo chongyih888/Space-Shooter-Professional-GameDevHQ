@@ -193,3 +193,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
+  _bubbleAudioclip: {fileID: 8300000, guid: d5b7d142cb2368a4f8714afb66313d1f, type: 3}

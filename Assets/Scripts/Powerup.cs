@@ -63,13 +63,13 @@ public class Powerup : MonoBehaviour
                         player.ShieldsActive();                       
                         break;
                     case 3:
-                        player.BulletsActive();
+                        player.NegativeSpeedBoostActive();                        
                         break;
                     case 4:
-                        player.HealthBoostActive();
+                        player.BulletsActive();                        
                         break;
                     case 5:
-                        player.NegativeSpeedBoostActive();
+                        player.HealthBoostActive();
                         break;
                     case 6:
                         player.HomingProjectileBoostActive();
@@ -98,11 +98,8 @@ public class Powerup : MonoBehaviour
         if (_player != null)
         {
             Vector3 direction = _player.position - transform.position;
-           // direction.Normalize();
-
-          // transform.localRotation = Quaternion.LookRotation(direction);
-
-           transform.Translate( direction * _speed * Time.deltaTime);
+           
+            transform.Translate( direction * _speed * Time.deltaTime);
         }
     }
 }

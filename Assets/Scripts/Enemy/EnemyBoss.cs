@@ -27,6 +27,13 @@ public class EnemyBoss : MonoBehaviour
 
     private UIManager _uiManager;
 
+    private SpawnManager _spawnManager;
+
+    [SerializeField]
+    private AudioClip _bubbleAudioclip;
+
+    private AudioSource _audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,7 +55,25 @@ public class EnemyBoss : MonoBehaviour
 
         if (_uiManager == null)
         {
-            Debug.LogError("The UIManager is NULL");
+            Debug.LogError("The UIManager is NULL.");
+        }
+
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+
+        if(_spawnManager == null)
+        {
+            Debug.LogError("The SpawnManger is NULL.");
+        }
+
+        _audioSource = GetComponent<AudioSource>();
+
+        if (_audioSource == null)
+        {
+            Debug.LogError("The AudioSource on the player is NULL");
+        }
+        else
+        {
+            _audioSource.clip = _bubbleAudioclip;
         }
     }
 
@@ -67,7 +92,7 @@ public class EnemyBoss : MonoBehaviour
                 {
                     _fireRate = Random.Range(3f, 7f);
                     _canFire = Time.time + _fireRate;
-
+                    _audioSource.Play();
                     Instantiate(_bubblePrefab, transform.position, Quaternion.identity);
                 }
 
@@ -92,6 +117,7 @@ public class EnemyBoss : MonoBehaviour
 
             if (_lives < 1)
             {
+                _spawnManager.DestroyContainer();
                 Destroy(GetComponent<Collider2D>());
                 Destroy(this.gameObject);
                 _uiManager.WinSequence();
@@ -110,6 +136,7 @@ public class EnemyBoss : MonoBehaviour
 
             if (_lives < 1)
             {
+                _spawnManager.DestroyContainer();
                 Destroy(GetComponent<Collider2D>());
                 Destroy(this.gameObject);
                 _uiManager.WinSequence();
@@ -127,8 +154,9 @@ public class EnemyBoss : MonoBehaviour
 
             if (_lives < 1)
             {
+                _spawnManager.DestroyContainer();
                 Destroy(GetComponent<Collider2D>());
-                Destroy(this.gameObject);
+                Destroy(this.gameObject);                
                 _uiManager.WinSequence();
             }
         }
